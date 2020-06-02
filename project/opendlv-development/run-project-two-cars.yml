@@ -1,0 +1,68 @@
+version: '2'
+
+services:
+# Kiwi 1:
+  cone-detection-1:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-perception-cone-detection:v1.7
+    restart: on-failure
+    network_mode: "host"
+    ipc: "host"
+    volumes:
+        - /tmp:/tmp
+    environment:
+        - DISPLAY=${DISPLAY}
+    command: "--cid=111 --name=video0.argb --width=1280 --height=720"
+
+  kiwi-detection-1:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-perception-kiwi-detection:v1.3.2  
+    restart: on-failure
+    network_mode: "host"
+    ipc: "host"
+    volumes:
+        - /tmp:/tmp
+    environment:
+        - DISPLAY=${DISPLAY}
+    command: "--cid=111 --name=video0.argb --width=1280 --height=720 --weights=simulation --verbose"
+ 
+  actuation-1:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-actuation:v1.3.3
+    network_mode: "host"
+    command: "/usr/bin/opendlv-actuation --cid=111 --freq=30 --verbose"
+
+  development:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-development
+#    build:
+#        context: ./opendlv-development
+#        dockerfile: Dockerfile
+    restart: on-failure
+    network_mode: "host"
+    ipc: "host"
+    volumes:
+        - /tmp:/tmp
+    environment:
+        - DISPLAY=${DISPLAY}
+    command: "--cid=111 --name=video0.argb --width=1280 --height=720"
+
+# Kiwi 2:
+  cone-detection-2:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-perception-cone-detection:v1.7
+    restart: on-failure
+    network_mode: "host"
+    ipc: "host"
+    volumes:
+        - /tmp:/tmp
+    environment:
+        - DISPLAY=${DISPLAY}
+    command: "--cid=112 --name=video0.argb --width=1280 --height=720"
+
+  kiwi-detection-2:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-perception-kiwi-detection:v1.3.2  
+    restart: on-failure
+    network_mode: "host"
+    ipc: "host"
+    volumes:
+        - /tmp:/tmp
+    environment:
+        - DISPLAY=${DISPLAY}
+    command: "--cid=112 --name=video0.argb --width=1280 --height=720 --weights=simulation"
+

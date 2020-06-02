@@ -1,0 +1,6 @@
+build/
+
+recordings/*.rec
+!recordings/Cones-2020-05-15.rec
+
+.vscode

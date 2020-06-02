@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  cone-detection:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-perception-cone-detection:v1.4.2
+    restart: on-failure
+    network_mode: "host"
+    ipc: "host"
+    volumes:
+        - /tmp:/tmp
+    environment:
+        - DISPLAY=${DISPLAY}
+    command: "--cid=140 --name=img.argb --width=1280 --height=720"
+
+  kiwi-detection:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-perception-kiwi-detection:v1.3.2
+    restart: on-failure
+    network_mode: "host"
+    ipc: "host"
+    volumes:
+        - /tmp:/tmp
+    environment:
+        - DISPLAY=${DISPLAY}
+    command: "--cid=140 --name=img.argb --width=1280 --height=720 --weights=real"
+ 
+  actuation:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-actuation:v1.3.2
+    network_mode: "host"
+    command: "/usr/bin/opendlv-actuation --cid=140 --freq=40"

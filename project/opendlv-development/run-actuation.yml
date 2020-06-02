@@ -1,0 +1,7 @@
+version: '2'
+
+services: 
+  actuation:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-actuation:v1.3.3
+    network_mode: "host"
+    command: "/usr/bin/opendlv-actuation --cid=111 --freq=40"

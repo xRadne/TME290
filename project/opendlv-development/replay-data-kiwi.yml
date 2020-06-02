@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  video-h264-replay-amd64:
+    build:
+      context: https://github.com/chalmers-revere/opendlv-video-h264-replay.git#v0.0.1
+      dockerfile: Dockerfile.amd64
+    restart: on-failure
+    network_mode: "host"
+    ipc: "host"
+    volumes:
+      - ./recordings:/opt/recordings
+      - /tmp:/tmp
+    environment:
+      - DISPLAY=${DISPLAY}
+    command: "--cid=111 --name=img.argb /opt/recordings/task2/2020-05-14_122419-video-all.rec
+" # Change the filename here, the path should stay the same

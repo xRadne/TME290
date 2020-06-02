@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+    percpetion-cone-detection:
+        build:
+            context: ./opendlv-perception-cone-detection
+            dockerfile: Dockerfile
+        restart: on-failure
+        network_mode: "host"
+        ipc: "host"
+        volumes:
+            - /tmp:/tmp
+        environment:
+            - DISPLAY=${DISPLAY}
+        command: "--cid=111 --name=img.argb --width=1280 --height=720 --verbose"
+        #command: "--cid=111 --name=video0.argb --width=1280 --height=720 --verbose"

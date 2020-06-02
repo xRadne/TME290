@@ -1,0 +1,44 @@
+version: '2'
+
+services:
+  cone-detection:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-perception-cone-detection:v1.7
+    restart: on-failure
+    network_mode: "host"
+    ipc: "host"
+    volumes:
+        - /tmp:/tmp
+    environment:
+        - DISPLAY=${DISPLAY}
+    command: "--cid=111 --name=video0.argb --width=1280 --height=720"
+
+  # kiwi-detection:
+  #   image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-perception-kiwi-detection:v1.8.1
+  #   restart: on-failure
+  #   network_mode: "host"
+  #   ipc: "host"
+  #   volumes:
+  #       - /tmp:/tmp
+  #   environment:
+  #       - DISPLAY=${DISPLAY}
+  #   command: "--cid=111 --name=video0.argb --width=1280 --height=720 --weights=simulation"
+ 
+  actuation:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-actuation:v1.4.1
+    network_mode: "host"
+    command: "/usr/bin/opendlv-actuation --cid=111 --freq=40 --kp=0.2 --verbose"
+
+  development:
+    image: registry.git.chalmers.se/courses/tme290/2020/group8/opendlv-development:0.0.2
+  #    build:
+  #        context: ./opendlv-development
+  #        dockerfile: Dockerfile
+    restart: on-failure
+    network_mode: "host"
+    ipc: "host"
+    volumes:
+    - /tmp:/tmp
+    environment:
+    - DISPLAY=${DISPLAY}
+    command: "--cid=111 --name=video0.argb --width=1280 --height=720 --verbose"
+

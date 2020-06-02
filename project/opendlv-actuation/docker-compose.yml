@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+    actuation:
+        build: 
+            context: ./
+            dockerfile: Dockerfile
+        network_mode: "host"
+        # command: "/usr/bin/opendlv-actuation --cid=111 --freq=10"
+        command: "/usr/bin/opendlv-actuation --cid=111 --freq=10 --verbose"

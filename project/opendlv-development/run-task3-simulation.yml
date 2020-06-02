@@ -1,0 +1,50 @@
+version: "3.6"
+
+services:
+# Kiwi car 1:
+  sim-global-1:
+    image: chalmersrevere/opendlv-sim-global-amd64:v0.0.7
+    network_mode: "host"
+    command: "/usr/bin/opendlv-sim-global --cid=111 --freq=50 --frame-id=0 --x=-1.5 --y=0.0 --yaw=0.0 --timemod=0.1 --extra-cid-out=112:1"
+
+  sim-motor-kiwi-1:
+    image: chalmersrevere/opendlv-sim-motor-kiwi-amd64:v0.0.7
+    network_mode: "host"
+    command: "/usr/bin/opendlv-sim-motor-kiwi --cid=111 --freq=200 --frame-id=0 --timemod=0.1"
+
+  sim-camera-1:
+    container_name: sim-camera-1
+    image: chalmersrevere/opendlv-sim-camera-mesa:v0.0.1
+    ipc: "host"
+    network_mode: "host"
+    volumes:
+      - ./crossing2:/opt/map
+      - /tmp:/tmp
+    environment:
+      - DISPLAY=${DISPLAY}
+    command: "--cid=111 --frame-id=0 --map-path=/opt/map --x=0.0 --z=0.095 --width=1280 --height=720 --fovy=48.8 --freq=7.5 --timemod=0.1 --verbose"
+
+# Kiwi car 2:
+  sim-global-2:
+    image: chalmersrevere/opendlv-sim-global-amd64:v0.0.7
+    network_mode: "host"
+    command: "/usr/bin/opendlv-sim-global --cid=112 --freq=50 --timemod=0.1 --frame-id=0 --x=-0.05 --y=-1.3 --yaw=1.5 --extra-cid-out=111:1"
+
+  sim-motor-kiwi-2:
+    image: chalmersrevere/opendlv-sim-motor-kiwi-amd64:v0.0.7
+    network_mode: "host"
+    command: "/usr/bin/opendlv-sim-motor-kiwi --cid=112 --freq=200 --timemod=0.1 --frame-id=0"
+
+  opendlv-kiwi-view-2:
+    image: chrberger/opendlv-kiwi-view-webrtc-multi:v0.0.6
+    network_mode: "host"
+    volumes:
+      - ~/recordings:/opt/vehicle-view/recordings
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - PORT=8082
+      - OD4SESSION_CID=112
+      - PLAYBACK_OD4SESSION_CID=254
+
+
+  

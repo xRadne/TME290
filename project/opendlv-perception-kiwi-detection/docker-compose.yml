@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+    perception-kiwi-detection:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: on-failure
+        network_mode: "host"
+        ipc: "host"
+        volumes:
+            - /tmp:/tmp
+        #            - ./src/network_data:/network_data
+        environment:
+            - DISPLAY=${DISPLAY}
+        # command: "--cid=111 --name=video0.argb --width=1280 --height=720 --weights=real"
+        command: "--cid=111 --name=video0.argb --width=1280 --height=720 --weights=real --verbose"
